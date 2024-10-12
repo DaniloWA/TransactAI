@@ -1,0 +1,135 @@
+[
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "xml.etree.ElementTree",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "xml.etree.ElementTree",
+        "description": "xml.etree.ElementTree",
+        "detail": "xml.etree.ElementTree",
+        "documentation": {}
+    },
+    {
+        "label": "aiohttp",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "aiohttp",
+        "description": "aiohttp",
+        "detail": "aiohttp",
+        "documentation": {}
+    },
+    {
+        "label": "asyncio",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "asyncio",
+        "description": "asyncio",
+        "detail": "asyncio",
+        "documentation": {}
+    },
+    {
+        "label": "defaultdict",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "tqdm",
+        "importPath": "tqdm",
+        "description": "tqdm",
+        "isExtraImport": true,
+        "detail": "tqdm",
+        "documentation": {}
+    },
+    {
+        "label": "parse_ofx",
+        "kind": 2,
+        "importPath": "index.js",
+        "description": "index.js",
+        "peekOfCode": "def parse_ofx(file_path):\n    transactions = []\n    try:\n        with open(file_path, \"r\", encoding=\"utf-8\") as file:\n            data = file.read()\n            sections = data.split(\"<STMTTRN>\")[1:]  # Ignora o cabeçalho\n            for section in sections:\n                transaction = {\n                    \"type\": get_value(section, \"TRNTYPE\"),\n                    \"date\": format_date(get_value(section, \"DTPOSTED\")),",
+        "detail": "index.js",
+        "documentation": {}
+    },
+    {
+        "label": "format_date",
+        "kind": 2,
+        "importPath": "index.js",
+        "description": "index.js",
+        "peekOfCode": "def format_date(date_str):\n    if date_str:\n        return f\"{date_str[6:8]}/{date_str[4:6]}/{date_str[0:4]}\"\n    return None\ndef get_value(section, tag):\n    start_tag = f\"<{tag}>\"\n    end_tag = f\"</{tag}>\"\n    start_index = section.find(start_tag) + len(start_tag)\n    end_index = section.find(end_tag)\n    if start_index != -1 and end_index != -1:",
+        "detail": "index.js",
+        "documentation": {}
+    },
+    {
+        "label": "get_value",
+        "kind": 2,
+        "importPath": "index.js",
+        "description": "index.js",
+        "peekOfCode": "def get_value(section, tag):\n    start_tag = f\"<{tag}>\"\n    end_tag = f\"</{tag}>\"\n    start_index = section.find(start_tag) + len(start_tag)\n    end_index = section.find(end_tag)\n    if start_index != -1 and end_index != -1:\n        return section[start_index:end_index].strip()\n    return None\ndef summarize(transactions):\n    total_income = sum(t[\"amount\"] for t in transactions if t[\"amount\"] > 0)",
+        "detail": "index.js",
+        "documentation": {}
+    },
+    {
+        "label": "summarize",
+        "kind": 2,
+        "importPath": "index.js",
+        "description": "index.js",
+        "peekOfCode": "def summarize(transactions):\n    total_income = sum(t[\"amount\"] for t in transactions if t[\"amount\"] > 0)\n    total_expenses = sum(-t[\"amount\"] for t in transactions if t[\"amount\"] < 0)\n    return {\n        \"total_income\": total_income,\n        \"total_expenses\": total_expenses,\n        \"balance\": total_income - total_expenses,\n        \"transaction_count\": len(transactions),\n    }\ndef create_output_file(categorized, category_sums, gain_category_sums, patients, month_year):",
+        "detail": "index.js",
+        "documentation": {}
+    },
+    {
+        "label": "create_output_file",
+        "kind": 2,
+        "importPath": "index.js",
+        "description": "index.js",
+        "peekOfCode": "def create_output_file(categorized, category_sums, gain_category_sums, patients, month_year):\n    with open(f\"{month_year}.txt\", \"w\", encoding=\"utf-8\") as f:\n        f.write(\"Gastos Detalhados:\\n\")\n        for expense in categorized[\"expenses\"]:\n            f.write(f\"{expense['date']} - {expense['description']} - R$ {expense['amount']:.2f} - Categoria: {expense['category']}\\n\")\n        f.write(\"\\nGanhos Detalhados:\\n\")\n        for gain in categorized[\"gains\"]:\n            f.write(f\"{gain['date']} - {gain['description']} - R$ {gain['amount']:.2f} - Categoria: {gain['category']}\\n\")\n        f.write(\"\\nResumo por Categoria de Gastos:\\n\")\n        for category, total in category_sums.items():",
+        "detail": "index.js",
+        "documentation": {}
+    },
+    {
+        "label": "read_progress",
+        "kind": 2,
+        "importPath": "index.js",
+        "description": "index.js",
+        "peekOfCode": "def read_progress():\n    \"\"\"Lê o arquivo de progresso e retorna um conjunto de IDs de transações já processadas.\"\"\"\n    if os.path.exists(PROGRESS_FILE):\n        with open(PROGRESS_FILE, 'r') as f:\n            return set(line.strip() for line in f)\n    return set()\ndef write_progress(processed_ids):\n    \"\"\"Grava os IDs das transações processadas no arquivo de progresso.\"\"\"\n    with open(PROGRESS_FILE, 'w') as f:\n        for transaction_id in processed_ids:",
+        "detail": "index.js",
+        "documentation": {}
+    },
+    {
+        "label": "write_progress",
+        "kind": 2,
+        "importPath": "index.js",
+        "description": "index.js",
+        "peekOfCode": "def write_progress(processed_ids):\n    \"\"\"Grava os IDs das transações processadas no arquivo de progresso.\"\"\"\n    with open(PROGRESS_FILE, 'w') as f:\n        for transaction_id in processed_ids:\n            f.write(f\"{transaction_id}\\n\")\ndef main(folder_path):\n    ofx_files = [f for f in os.listdir(folder_path) if f.endswith('.ofx')]\n    processed_ids = read_progress()  # Lê os IDs já processados\n    for ofx_file in ofx_files:\n        file_path = os.path.join(folder_path, ofx_file)",
+        "detail": "index.js",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "index.js",
+        "description": "index.js",
+        "peekOfCode": "def main(folder_path):\n    ofx_files = [f for f in os.listdir(folder_path) if f.endswith('.ofx')]\n    processed_ids = read_progress()  # Lê os IDs já processados\n    for ofx_file in ofx_files:\n        file_path = os.path.join(folder_path, ofx_file)\n        print(f\"Processando arquivo: {file_path}\")\n        transactions = parse_ofx(file_path)\n        # Filtra transações já processadas\n        transactions_to_process = [t for t in transactions if str(t['amount']) not in processed_ids]\n        if transactions_to_process:",
+        "detail": "index.js",
+        "documentation": {}
+    },
+    {
+        "label": "PROGRESS_FILE",
+        "kind": 5,
+        "importPath": "index.js",
+        "description": "index.js",
+        "peekOfCode": "PROGRESS_FILE = \"progress.txt\"\nasync def fetch_category(session, transaction, is_credit=False, retry_count=5):\n    url = \"http://localhost:1234/v1/chat/completions\"\n    headers = {\"Content-Type\": \"application/json\"}\n    is_paciente = transaction['amount'] <= 500 and \"transferência recebida\" in transaction['description'].lower()\n    categories_list_credit = [\n            \"WISE BRASIL CORRETORA\",\n            \"LUCAS DUARTE OLIVEIRA\",\n            \"DANILO DUARTE OLIVEIRA\",\n            \"APLICAÇÃO RDB\",",
+        "detail": "index.js",
+        "documentation": {}
+    }
+]
